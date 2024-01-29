@@ -1,5 +1,4 @@
 import pyodbc
-from datetime import datetime
 
 def Conexao():
 

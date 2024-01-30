@@ -1,5 +1,9 @@
 # Teste-Delfia
 
-Olá, quem for rodar o código, vai precisar instalar algumas bibliotecas, como: selenium, pyodbc
+Olá, aqui deixarei algumas informações sobre o código, como rodar e sua dependência.
 
-Quando for rodar, vá para o arquivo de Conexão e muda a conexão do banco de dados, para o seu banco de dados que irá realizar, pra rodar pelo VS CODE, pode rodar apertando F5 e clicando no arquivo python pra rodar.
+1 - Terá que instalar algumas bibliotecas do python como, pyautogui, selenium, reportlab e pyodbc.
+
+2 - Peço que quando o código estiver rodando, não mexa no mouse, pois em duas partes do código, ele tá usando o pyautogui para clicar em alguns elementos que o selenium não encontrou.
+
+3 - Na hora de criar o PDF eu tive algumas dificuldades pois nunca criei um PDF, dei uma pesquisada na internet e vi que é muito difícil, mas consegui fazer de um jeito bem básico e simples, espero que não me prejudique isso.

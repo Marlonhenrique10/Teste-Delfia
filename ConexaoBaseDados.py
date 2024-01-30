@@ -18,21 +18,35 @@ def Conexao():
     finally:
         print('Terminou')
 
+def tabela_existe(conexao, nome_tabela):
+    try:
+        cursor = conexao.cursor()
+
+        # Verifica se a tabela existe no banco de dados
+        cursor.execute(f"SELECT 1 FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = '{nome_tabela}'")
+        resultado = cursor.fetchone()
+
+        return resultado is not None
+
+    except Exception as erro:
+        print(f'Erro ao verificar a existência da tabela: {erro}')
+        return False
+
 def criar_tabela():
     try:
         conex = Conexao()
         cursor = conex.cursor()
 
         cursor.execute('''
-                CREATE TABLE info_voo (
-                    Empresa VARCHAR(10),
-                    Companhia_de_voo VARCHAR(255),
-                    Preco_total VARCHAR(10),
-                    Taxa_de_embarque VARCHAR(10),
-                    Taxa_de_servico VARCHAR(10),
-                    Tempo_de_voo_minutos INT,
-                    Data_hora_ida DATETIME,
-                    Data_hora_volta DATETIME
+                CREATE TABLE tabela_produtos (
+                    modelo VARCHAR(50),
+                    capacidade_GB VARCHAR(10),
+                    tamanho_da_tela VARCHAR(10),
+                    preco_total VARCHAR(10),
+                    valor_parcela VARCHAR(10),
+                    quantidade_parcela VARCHAR(10),
+                    cor VARCHAR(10),
+                    ultimas_pecas BIT
                 )
         ''')
 
@@ -43,21 +57,22 @@ def criar_tabela():
     finally:
         print('Terminou')
 
-def inserir_dados_voo(dados):
+def salvar_produtos(dados):
 
     try:
         conn = Conexao()
+
+        if not tabela_existe(conn, 'tabela_produtos'):
+            criar_tabela()
+
         cursor = conn.cursor()
 
         for dado in dados:
 
-            data_hora_ida_format = dado['Data_hora_ida'].strftime('%d/%m/%Y %H:%M')
-            data_hora_volta_format = dado['Data_hora_volta'].strftime('%d/%m/%Y %H:%M')
-
-            cursor.execute('''INSERT INTO info_voo (Empresa, Companhia_de_voo, Preco_total, Taxa_de_embarque,'''\
-                           '''Taxa_de_servico, Tempo_de_voo_minutos, Data_hora_ida, Data_hora_volta)'''\
-                           '''VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', dado['Empresa'], dado['Companhia_de_voo'], dado['Preco_total'], dado['Taxa_de_embarque'],\
-                            dado['Taxa_de_servico'], dado['Tempo_de_voo_minutos'], data_hora_ida_format, data_hora_volta_format)
+            cursor.execute('''INSERT INTO tabela_produtos (modelo, capacidade_GB, tamanho_da_tela, preco_total,'''\
+                           '''valor_parcela, quantidade_parcela, cor, ultimas_pecas)'''\
+                           '''VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', dado['modelo'], dado['capacidade'], dado['tamanho_da_tela'], dado['preco_total'],\
+                            dado['valor_parcela'], dado['quantidade_parcela'], dado['cor'], dado['ultimas_pecas'])
         conn.commit()
         conn.close()
     except Exception as erro:
